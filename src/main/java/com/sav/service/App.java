@@ -16,5 +16,8 @@ public class App {
         System.out.println(contactService.getAllHobbies());
         contactService.addHobby("football", "favourite team is Dnipro");
         System.out.println(contactService.getAllHobbies());
+        System.out.println(contactService.getAllPlaces());
+        contactService.addPlace("Lviv", 0.21, 0.15);
+        System.out.println(contactService.getAllPlaces());
     }
 }

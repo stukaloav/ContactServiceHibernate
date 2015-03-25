@@ -4,11 +4,14 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 @Entity
 @Table(name = "CONTACT")
 public class Contact implements Serializable{
 
     @Id
+    @GeneratedValue(strategy = IDENTITY)
     @Column
     private long id;
 
