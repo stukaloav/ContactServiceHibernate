@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface ContactService {
     void createContact(String firstName, String lastName, Date birthDate);
-//    void deleteContact();
+    void deleteContact(Contact contact);
     List<Contact> getAllContacts();
 }

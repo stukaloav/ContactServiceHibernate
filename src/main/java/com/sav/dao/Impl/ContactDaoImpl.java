@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Repository    //in book @Repository("contactDao") also annotation @Transactional
+@Repository
 public class ContactDaoImpl implements ContactDao{
 
     @Autowired
@@ -20,7 +20,6 @@ public class ContactDaoImpl implements ContactDao{
     public void addContact(Contact contact) {
         sessionFactory.getCurrentSession().
                 saveOrUpdate(contact);
-        //log.info("Contact save with id: " + contact.getId());
     }
 
 
@@ -28,7 +27,6 @@ public class ContactDaoImpl implements ContactDao{
     @Transactional
     public void deleteContact(Contact contact) {
         sessionFactory.getCurrentSession().delete(contact);
-        //log.info("Contact deleted with id: " + contact.getId());
     }
 
     @Override
