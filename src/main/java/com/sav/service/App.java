@@ -35,10 +35,8 @@ public class App {
         System.out.println(contactService.getAllContacts());
         contact = contactDao.getContactById(1l);
         hobby = hobbyDao.getHobbyById(1l);
-        contact.getHobbies().add(hobby);
+        System.out.println(contact);
+        System.out.println(hobby);
 
-
-
-        System.out.println();
     }
 }

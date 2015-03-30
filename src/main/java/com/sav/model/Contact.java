@@ -27,10 +27,11 @@ public class Contact implements Serializable{
     @Column(name="BIRTH_DATE")
     private Date birthDate;
 
-    @ManyToMany(cascade=CascadeType.ALL)
-    @JoinTable(name="CONTACT_HOBBIES", joinColumns={@JoinColumn(referencedColumnName="ID")}
-            , inverseJoinColumns={@JoinColumn(referencedColumnName="ID")})
-    private List<Hobby> hobbies = new ArrayList<Hobby>();
+    @ManyToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+    @JoinTable(name="CONTACT_HOBBIES"
+            , joinColumns={@JoinColumn(name="CONTACT_ID")}
+            , inverseJoinColumns={@JoinColumn(name="HOBBY_ID")})
+    private List<Hobby> hobbies;
 
     public Contact() {
     }

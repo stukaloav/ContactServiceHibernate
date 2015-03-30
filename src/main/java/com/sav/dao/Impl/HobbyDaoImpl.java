@@ -24,7 +24,7 @@ public class HobbyDaoImpl implements HobbyDao{
 
     @Override
     @Transactional
-    public List<Contact> getAllContactsWithHobby(Hobby hobby) {
+    public List<Contact> getAllContactsWithHobby() {
         return null;
     }
 

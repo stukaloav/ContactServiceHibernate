@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface HobbyDao {
     void addHobby(Hobby hobby);
-    List<Contact> getAllContactsWithHobby(Hobby hobby);
+    List<Contact> getAllContactsWithHobby();
     List<Hobby> getAllHobbies();
     Hobby getHobbyById(long id);
 }
