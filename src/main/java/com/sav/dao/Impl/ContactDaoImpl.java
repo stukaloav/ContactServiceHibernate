@@ -22,7 +22,6 @@ public class ContactDaoImpl implements ContactDao{
                 saveOrUpdate(contact);
     }
 
-
     @Override
     @Transactional
     public void deleteContact(Contact contact) {
@@ -34,5 +33,11 @@ public class ContactDaoImpl implements ContactDao{
     public List<Contact> getAllContacts() {
         return sessionFactory.getCurrentSession().
                 createQuery("from Contact").list();
+    }
+
+    @Override
+    @Transactional
+    public Contact getContactById(long id){
+        return (Contact) sessionFactory.getCurrentSession().get(Contact.class, id);
     }
 }

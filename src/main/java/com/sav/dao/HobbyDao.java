@@ -9,4 +9,5 @@ public interface HobbyDao {
     void addHobby(Hobby hobby);
     List<Contact> getAllContactsWithHobby(Hobby hobby);
     List<Hobby> getAllHobbies();
+    Hobby getHobbyById(long id);
 }

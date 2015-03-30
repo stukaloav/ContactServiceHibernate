@@ -34,4 +34,10 @@ public class HobbyDaoImpl implements HobbyDao{
         return sessionFactory.getCurrentSession().
                 createQuery("from Hobby").list();
     }
+
+    @Override
+    @Transactional
+    public Hobby getHobbyById(long id) {
+        return (Hobby) sessionFactory.getCurrentSession().get(Hobby.class, id);
+    }
 }

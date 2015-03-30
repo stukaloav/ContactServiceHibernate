@@ -2,6 +2,7 @@ package com.sav.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -19,6 +20,24 @@ public class Hobby implements Serializable{
 
     @Column(name = "DESCRIPTION")
     private String description;
+
+    @ManyToMany(mappedBy="hobbies")
+    private List<Contact> contacts;
+
+    public Hobby() {
+    }
+
+    public Hobby(String title, String description) {
+        this.title = title;
+        this.description = description;
+    }
+
+    public List<Contact> getContacts() {
+        return contacts;
+    }
+    public void setContacts(List<Contact> contacts) {
+        this.contacts = contacts;
+    }
 
     public long getId() {
         return id;

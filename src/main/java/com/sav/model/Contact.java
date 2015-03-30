@@ -1,8 +1,11 @@
 package com.sav.model;
 
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -12,7 +15,7 @@ public class Contact implements Serializable{
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Column
+    @Column(name = "ID")
     private long id;
 
     @Column(name="FIRST_NAME")
@@ -23,6 +26,27 @@ public class Contact implements Serializable{
 
     @Column(name="BIRTH_DATE")
     private Date birthDate;
+
+    @ManyToMany(cascade=CascadeType.ALL)
+    @JoinTable(name="CONTACT_HOBBIES", joinColumns={@JoinColumn(referencedColumnName="ID")}
+            , inverseJoinColumns={@JoinColumn(referencedColumnName="ID")})
+    private List<Hobby> hobbies = new ArrayList<Hobby>();
+
+    public Contact() {
+    }
+
+    public Contact(String firstName, String lastName, Date birthDate) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+    }
+
+    public List<Hobby> getHobbies() {
+        return hobbies;
+    }
+    public void setHobbies(List<Hobby> hobbies) {
+        this.hobbies = hobbies;
+    }
 
     public long getId() {
         return id;
