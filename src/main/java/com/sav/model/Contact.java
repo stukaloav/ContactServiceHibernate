@@ -29,8 +29,8 @@ public class Contact implements Serializable{
 
     @ManyToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
     @JoinTable(name="CONTACT_HOBBIES"
-            , joinColumns={@JoinColumn(name="CONTACT_ID")}
-            , inverseJoinColumns={@JoinColumn(name="HOBBY_ID")})
+            , joinColumns={@JoinColumn(name = "CONTACT_ID")}
+            , inverseJoinColumns={@JoinColumn(name = "HOBBY_ID")})
     private List<Hobby> hobbies;
 
     public Contact() {

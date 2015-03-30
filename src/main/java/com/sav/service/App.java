@@ -3,6 +3,7 @@ package com.sav.service;
 import com.sav.dao.ContactDao;
 import com.sav.dao.HobbyDao;
 import com.sav.model.Contact;
+import com.sav.model.ContactHobbies;
 import com.sav.model.Hobby;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -37,6 +38,8 @@ public class App {
         hobby = hobbyDao.getHobbyById(1l);
         System.out.println(contact);
         System.out.println(hobby);
-
+        contactDao.addHobby(1l, hobby);
+        contactDao.addHobby(2l, hobby);
+        System.out.println(contactDao.getHobbies());
     }
 }
