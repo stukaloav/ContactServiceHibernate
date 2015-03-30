@@ -18,6 +18,4 @@ public interface ContactDao {
     @Transactional
     void addHobby(long id, Hobby hobby);
 
-    @Transactional
-    List<ContactHobbies> getHobbies();
 }

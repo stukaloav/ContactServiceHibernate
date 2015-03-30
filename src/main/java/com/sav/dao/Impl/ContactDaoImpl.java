@@ -51,12 +51,6 @@ public class ContactDaoImpl implements ContactDao{
         sessionFactory.getCurrentSession().update(contact);
     }
 
-    @Override
-    @Transactional
-    public List<ContactHobbies> getHobbies(){
-        return sessionFactory.getCurrentSession().createQuery("from ContactHobbies").list();
-    }
-
 
 
 }
