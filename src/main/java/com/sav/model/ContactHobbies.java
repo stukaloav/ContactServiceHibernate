@@ -6,11 +6,9 @@ import java.io.Serializable;
 @Entity
 @Table(name = "CONTACT_HOBBIES")
 public class ContactHobbies implements Serializable {
-
     @Id
     @Column(name = "CONTACT_ID")
     private long contactId;
-
     @Id
     @Column(name = "HOBBY_ID")
     private long hobbyId;

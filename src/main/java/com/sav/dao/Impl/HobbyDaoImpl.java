@@ -27,8 +27,43 @@ public class HobbyDaoImpl implements HobbyDao{
         sessionFactory.getCurrentSession().save(hobby);
     }
 
+    @Transactional
+    private Set<Long> getIdOfAllContactsWithHobby() {
+        List<ContactHobbies> contactHobbiesList =
+                sessionFactory.getCurrentSession().
+                        createQuery("from ContactHobbies").list();
+        if (contactHobbiesList == null){
+            return null;
+        }
+        Set<Long> contactsId = new HashSet<Long>();
+        for (ContactHobbies contactHobbies: contactHobbiesList){
+            contactsId.add(contactHobbies.getContactId());
+        }
+        return contactsId;
+    }
+
+    @Transactional
+    private Contact getContactById(long id){
+        return (Contact) sessionFactory.getCurrentSession().get(Contact.class, id);
+
+    }
+
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
+    public Set<Contact> getAllContactsWithHobby() {
+        Set<Long> contactId = getIdOfAllContactsWithHobby();
+        if (contactId == null){
+            return null;
+        }
+        Set<Contact> contactsWithHobby = new HashSet<Contact>();
+        for (Long id: contactId){
+            contactsWithHobby.add(getContactById(id));
+        }
+        return contactsWithHobby;
+    }
+
+    @Override
+    @Transactional
     public List<Hobby> getAllHobbies() {
         return sessionFactory.getCurrentSession().
                 createQuery("from Hobby").list();
@@ -40,40 +75,4 @@ public class HobbyDaoImpl implements HobbyDao{
         return (Hobby) sessionFactory.getCurrentSession().get(Hobby.class, id);
     }
 
-    @Override
-    @Transactional
-    public Set<Contact> getAllContactsWithHobby() {
-        Set<Long> contactsId = getIdOfContactWithHobbies();
-        if (contactsId == null){
-            return null;
-        }
-        Set<Contact> contacts = new HashSet<Contact>();
-        for (Long id: contactsId){
-            contacts.add(getContactById(id));
-        }
-        return contacts;
-    }
-
-    @Transactional
-    private List<ContactHobbies> getContactHobbies(){
-        return sessionFactory.getCurrentSession().createQuery("from ContactHobbies").list();
-    }
-
-    @Transactional
-    private Set<Long> getIdOfContactWithHobbies(){
-        List<ContactHobbies> contactHobbiesList = getContactHobbies();
-        if (contactHobbiesList.isEmpty()){
-            return null;
-        }
-        Set<Long> idOfContactWithHobbies = new HashSet<Long>();
-        for (ContactHobbies item: contactHobbiesList){
-            idOfContactWithHobbies.add(item.getContactId());
-        }
-        return idOfContactWithHobbies;
-    }
-
-    @Transactional
-    private Contact getContactById(long id){
-        return (Contact) sessionFactory.getCurrentSession().get(Contact.class, id);
-    }
 }

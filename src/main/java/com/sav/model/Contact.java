@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -31,7 +32,16 @@ public class Contact implements Serializable{
     @JoinTable(name="CONTACT_HOBBIES"
             , joinColumns={@JoinColumn(name = "CONTACT_ID")}
             , inverseJoinColumns={@JoinColumn(name = "HOBBY_ID")})
-    private List<Hobby> hobbies;
+    private Set<Hobby> hobbies;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "FRIENDSHIP"
+            , joinColumns = {@JoinColumn(name = "FIRST_CONTACT_ID")}
+            , inverseJoinColumns = {@JoinColumn(name = "SECOND_CONTACT_ID")})
+    private Set<Contact> friends;
+
+    @ManyToMany(mappedBy = "friends")
+    private Set<Contact> inverseFriends;
 
     public Contact() {
     }
@@ -42,11 +52,23 @@ public class Contact implements Serializable{
         this.birthDate = birthDate;
     }
 
-    public List<Hobby> getHobbies() {
+    public Set<Hobby> getHobbies() {
         return hobbies;
     }
-    public void setHobbies(List<Hobby> hobbies) {
+    public void setHobbies(Set<Hobby> hobbies) {
         this.hobbies = hobbies;
+    }
+    public Set<Contact> getFriends() {
+        return friends;
+    }
+    public void setFriends(Set<Contact> friends) {
+        this.friends = friends;
+    }
+    public Set<Contact> getInverseFriends() {
+        return inverseFriends;
+    }
+    public void setInverseFriends(Set<Contact> inverseFriends) {
+        this.inverseFriends = inverseFriends;
     }
 
     public long getId() {
@@ -82,5 +104,25 @@ public class Contact implements Serializable{
                 ", lastName='" + lastName + '\'' +
                 ", birthDate=" + birthDate +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Contact contact = (Contact) o;
+
+        if (id != contact.id) return false;
+        if (birthDate != null ? !birthDate.equals(contact.birthDate) : contact.birthDate != null) return false;
+        if (firstName != null ? !firstName.equals(contact.firstName) : contact.firstName != null) return false;
+        if (lastName != null ? !lastName.equals(contact.lastName) : contact.lastName != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return  (int) (id ^ (id >>> 32));
     }
 }

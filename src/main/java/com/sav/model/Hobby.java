@@ -67,4 +67,27 @@ public class Hobby implements Serializable{
                 ", description='" + description + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Hobby hobby = (Hobby) o;
+
+        if (id != hobby.id) return false;
+        if (description != null ? !description.equals(hobby.description) : hobby.description != null) return false;
+        if (title != null ? !title.equals(hobby.title) : hobby.title != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (title != null ? title.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (contacts != null ? contacts.hashCode() : 0);
+        return result;
+    }
 }

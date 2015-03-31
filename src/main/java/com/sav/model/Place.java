@@ -56,4 +56,6 @@ public class Place {
                 ", latitude=" + latitude +
                 '}';
     }
+
+
 }

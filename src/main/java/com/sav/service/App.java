@@ -26,19 +26,21 @@ public class App {
 
         Contact contact = new Contact("Jane", "Patric", new Date(23, 1, 4));
         Hobby hobby = new Hobby("Movies", "Detective");
-
-        HobbyDao hobbyDao = context.getBean(HobbyDao.class);
-        hobbyDao.addHobby(hobby);
-        ContactDao contactDao = context.getBean(ContactDao.class);
-        contactDao.addContact(contact);
+        contactService.addContact(contact);
+        contactService.addHobby(hobby);
         System.out.println(contactService.getAllHobbies());
         System.out.println(contactService.getAllContacts());
-        contact = contactDao.getContactById(1l);
-        hobby = hobbyDao.getHobbyById(1l);
-        System.out.println(contact);
-        System.out.println(hobby);
-        contactDao.addHobby(1l, hobby);
-        contactDao.addHobby(2l, hobby);
-        System.out.println(hobbyDao.getAllContactsWithHobby());
+        Contact contact1 = contactService.getContactById(1l);
+        Contact contact2 = contactService.getContactById(2l);
+        System.out.println(contact1);
+        System.out.println(contact2);
+        contactService.addHobbyToContact(contact1, hobby);
+        System.out.println(contactService.getIdFromContact(contact1));
+        Contact contact3 = new Contact("Jane", "Patric", new Date(25, 1, 4));
+        contactService.addContact(contact3);
+        System.out.println(contactService.getAllContacts());
+        System.out.println(contactService.getContactById(8));
+        contactService.addFriendship(contact1, contact2);
+        System.out.println(contactService.getAllFriendPairs());
     }
 }
