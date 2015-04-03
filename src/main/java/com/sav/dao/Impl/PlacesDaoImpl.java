@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-public class PlacesDaoImpl implements PlaceDao{
+public class PlacesDaoImpl implements PlaceDao {
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -27,4 +27,5 @@ public class PlacesDaoImpl implements PlaceDao{
         return sessionFactory.getCurrentSession().
                 createQuery("from Place").list();
     }
+
 }

@@ -32,12 +32,26 @@ public interface ContactService {
     @Transactional
     List<Friendship> getAllFriendPairs();
 
+    @Transactional
+    Set<Contact> getFriendsContacts(Contact contact);
+
     //Methods that deal with HobbyDao
     void addHobby(String title, String description);
     List<Hobby> getAllHobbies();
+
+    @Transactional
+    Set<String> getAllHobbiesTitle();
+
     void addHobby(Hobby hobby);
+
+    @Transactional
+    void deleteHobbyByTitle(String title);
 
     //Methods that deal with PlaceDao
     void addPlace(String title, double longitude, double latitude);
+
+    @Transactional
+    void addPlace(Place place);
+
     List<Place> getAllPlaces();
 }

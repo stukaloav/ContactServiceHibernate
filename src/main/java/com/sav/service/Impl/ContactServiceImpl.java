@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -58,7 +59,7 @@ public class ContactServiceImpl implements ContactService {
     }
     @Override
     public Set<Hobby> getHobbiesFromContact(Contact contact) {
-        return null;
+        return contactDao.getHobbiesFromContact(contact);
     }
     @Override
     @Transactional
@@ -75,6 +76,12 @@ public class ContactServiceImpl implements ContactService {
     public List<Friendship> getAllFriendPairs(){
         return contactDao.getAllFriends();
     }
+    @Override
+    @Transactional
+    public Set<Contact> getFriendsContacts(Contact contact){
+        return contactDao.getFriendsFromContact(contact);
+    }
+
 
     //Methods that deal with HobbyDao
     @Override
@@ -91,8 +98,26 @@ public class ContactServiceImpl implements ContactService {
         return hobbyDao.getAllHobbies();}
     @Override
     @Transactional
+    public Set<String> getAllHobbiesTitle(){
+        List<Hobby> hobbies = hobbyDao.getAllHobbies();
+        if (hobbies.isEmpty()){
+            return null;
+        }
+        Set<String> hobbyTitles = new HashSet<String>();
+        for (Hobby hobby: hobbies){
+            hobbyTitles.add(hobby.getTitle());
+        }
+        return hobbyTitles;
+    }
+    @Override
+    @Transactional
     public void addHobby(Hobby hobby){
         hobbyDao.addHobby(hobby);
+    }
+    @Override
+    @Transactional
+    public void deleteHobbyByTitle(String title){
+        hobbyDao.deleteHobbyByTitle(title);
     }
 
     //Methods that deal with PlaceDao
@@ -107,7 +132,13 @@ public class ContactServiceImpl implements ContactService {
     }
     @Override
     @Transactional
+    public void addPlace(Place place){
+        placeDao.addPlace(place);
+    }
+    @Override
+    @Transactional
     public List<Place> getAllPlaces() {
         return placeDao.getAllPlaces();
     }
+
 }

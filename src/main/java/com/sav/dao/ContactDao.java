@@ -28,4 +28,12 @@ public interface ContactDao {
 
     @Transactional
     List<Friendship> getAllFriends();
+
+    @Transactional
+    Set<Contact> getFriendsFromContact(Contact contact);
+
+    @Transactional
+    Set<Contact> getAllContactsSamePlace(String placeTitle);
+
+    Set<Hobby> getHobbiesFromContact(Contact contact);
 }

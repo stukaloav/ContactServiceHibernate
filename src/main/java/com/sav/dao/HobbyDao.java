@@ -10,6 +10,7 @@ import java.util.Set;
 
 public interface HobbyDao {
     void addHobby(Hobby hobby);
+    void deleteHobbyByTitle(String title);
     Set<Contact> getAllContactsWithHobby();
     List<Hobby> getAllHobbies();
     Hobby getHobbyById(long id);

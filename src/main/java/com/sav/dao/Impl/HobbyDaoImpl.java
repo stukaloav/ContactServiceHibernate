@@ -75,4 +75,21 @@ public class HobbyDaoImpl implements HobbyDao{
         return (Hobby) sessionFactory.getCurrentSession().get(Hobby.class, id);
     }
 
+    @Override
+    @Transactional
+    public void deleteHobbyByTitle(String title){
+        if (title == null){
+            return;
+        }
+        List<Hobby> hobbyList = getAllHobbies();
+        if (hobbyList.isEmpty()){
+            return;
+        }
+        for (Hobby hobby: hobbyList){
+            if (title.equals(hobby.getTitle())){
+                sessionFactory.getCurrentSession().delete(hobby);
+            }
+        }
+    }
+
 }

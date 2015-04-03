@@ -3,10 +3,7 @@ package com.sav.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -53,6 +50,9 @@ public class Contact implements Serializable{
     }
 
     public Set<Hobby> getHobbies() {
+        if (hobbies == null){
+            hobbies = new HashSet<Hobby>();
+        }
         return hobbies;
     }
     public void setHobbies(Set<Hobby> hobbies) {

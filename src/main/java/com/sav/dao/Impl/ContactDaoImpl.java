@@ -1,9 +1,8 @@
 package com.sav.dao.Impl;
 
 import com.sav.dao.ContactDao;
-import com.sav.model.Contact;
-import com.sav.model.Friendship;
-import com.sav.model.Hobby;
+import com.sav.dao.HobbyDao;
+import com.sav.model.*;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -20,6 +19,8 @@ public class ContactDaoImpl implements ContactDao{
 
     @Autowired
     private SessionFactory sessionFactory;
+    @Autowired
+    private HobbyDao hobbyDao;
 
     @Override
     @Transactional
@@ -57,17 +58,35 @@ public class ContactDaoImpl implements ContactDao{
     @Override
     @Transactional
     public Contact getContactById(long id){
-            return (Contact) sessionFactory.
+            Contact contact = (Contact) sessionFactory.
                     getCurrentSession().get(Contact.class, id);
+        if (contact == null){
+            return null;
+        }
+        return contact;
     }
 
     @Override
     @Transactional
     public void addHobbyToContact(Contact contact, Hobby hobby){
-        Long id = contact.getId();
-        contact = (Contact) sessionFactory.getCurrentSession().get(Contact.class, id);
         contact.getHobbies().add(hobby);
         sessionFactory.getCurrentSession().saveOrUpdate(contact);
+    }
+
+    @Transactional
+    private Long getIdFromHobby(Hobby hobby){
+        if (hobby == null){
+            return null;
+        }
+        Query query = sessionFactory.getCurrentSession().
+                createQuery("select c from Hobby c where c=:parameter");
+        query.setParameter("parameter", hobby);
+        try {
+            hobby = (Hobby) query.uniqueResult();
+        }catch (HibernateException e){
+            e: return null;
+        }
+        return hobby.getId();
     }
 
     @Override
@@ -90,6 +109,12 @@ public class ContactDaoImpl implements ContactDao{
     @Override
     @Transactional
     public void addFriendship(Contact first, Contact second){
+        if (first.equals(second)){
+            throw new IllegalArgumentException("first should not be equal to second");
+        }
+        if (first == null || second == null){
+            throw new IllegalArgumentException("argument should not be null");
+        }
         Long firstId = first.getId();
         Long secondId = second.getId();
         first = (Contact) sessionFactory.getCurrentSession().get(Contact.class, firstId);
@@ -104,6 +129,58 @@ public class ContactDaoImpl implements ContactDao{
     public List<Friendship> getAllFriends(){
         return sessionFactory.getCurrentSession().
                 createQuery("from Friendship").list();
+    }
+
+    @Override
+    @Transactional
+    public Set<Contact> getFriendsFromContact(Contact contact){
+        if (contact == null){
+            throw new IllegalArgumentException("contact should not be null");
+        }
+        List<Friendship> friendshipList =
+                sessionFactory.getCurrentSession().
+                        createQuery("from Friendship").list();
+        if (friendshipList.isEmpty()){
+            return null;
+        }
+        Set<Contact> contactFriends = new HashSet<Contact>();
+        for (Friendship friendship: friendshipList){
+           Long friendId = friendship.getSecondContactId();
+            if(friendId.equals(contact.getId())){
+                friendId = friendship.getFirstContactId();
+            }
+            contactFriends.add(getContactById(friendId));
+        }
+        return contactFriends;
+    }
+
+    @Override
+    public Set<Hobby> getHobbiesFromContact(Contact contact) {
+        if (contact == null){
+            throw new IllegalArgumentException("argument should not be null");
+        }
+        return contact.getHobbies();
+    }
+
+    @Override
+    @Transactional
+    public Set<Contact> getAllContactsSamePlace(String placeTitle){
+        if (placeTitle == null){
+            throw new IllegalArgumentException("argument should not be null");
+        }
+        List<ContactPlaces> contactPlacesesList =
+                sessionFactory.getCurrentSession().
+                        createQuery("from ContactPlaces").list();
+        if (contactPlacesesList.isEmpty()){
+            return null;
+        }
+        Set<Contact> contactsSamePlace = new HashSet<Contact>();
+        for (ContactPlaces contactPlaces: contactPlacesesList){
+            long contactId = contactPlaces.getContactId();
+            Contact contact = getContactById(contactId);
+            contactsSamePlace.add(contact);
+        }
+        return contactsSamePlace;
     }
 
 }
